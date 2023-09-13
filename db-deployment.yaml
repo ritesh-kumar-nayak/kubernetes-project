@@ -2,7 +2,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mysql-db
+  name: vprodb #we are going to create a service of type clusterIP and the service will route the traffic to deployments which has this lable
   labels:
     app: vprodb
 spec:
@@ -14,7 +14,6 @@ spec:
     metadata:
       labels:
         app : vprodb
-
     spec:
       containers:
         - name: vprodb
@@ -31,17 +30,17 @@ spec:
                 secretKeyRef:
                   name: app-secret
                   key: db-pass
-      nodeSelector:
+      nodeSelector:  #it should come as the same indention as Container because it selects the node on which it this container will run
         zone: us-east-1a
       volumes:
         - name: vpro-db-data
           awsElasticBlockStore:
             volumeID: vol-085b700de1cc59e36
-            fsType: ext4                    #it is a way to format the file
-      initContainers:
+            fsType: ext4                     #it is a way to format the file
+      initContainers:         #it is just like any other container but it will start before anyother ocntainer and perform the operation supplied to the args
         - name: busybox
           image: busybox:latest
           args: ["rm","-rf","/var/lib/mysql/lost+found"]
           volumeMounts:
             - name: vpro-db-data
-              mountPath: /var/lib/mysql
+              mountPath: /var/lib/mysql   #here we are mounting the mysql folder to this container so that it can perform the sommand written in Args

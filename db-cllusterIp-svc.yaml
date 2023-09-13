@@ -1,0 +1,13 @@
+---
+#all the service details will be based on the application properties file
+apiVersion: v1
+kind: Service
+metadata:
+  name: vprodb   #this name is from application.properties file
+spec:
+  ports:
+    - port: 3306
+      targetPort: vprodb-port
+      protocol: TCP
+  selector:
+    app: vprodb  #it should be as saame as deployment file
