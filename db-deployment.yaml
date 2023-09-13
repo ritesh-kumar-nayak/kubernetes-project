@@ -35,7 +35,7 @@ spec:
       volumes:
         - name: vpro-db-data
           awsElasticBlockStore:
-            volumeID: vol-0074f5514fe415255
+            volumeID: vol-085b700de1cc59e36
             fsType: ext4                     #it is a way to format the file
       initContainers:         #it is just like any other container but it will start before anyother ocntainer and perform the operation supplied to the args
         - name: busybox
