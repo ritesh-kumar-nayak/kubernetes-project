@@ -5,7 +5,7 @@ metadata:
   name: vprodb #we are going to create a service of type clusterIP and the service will route the traffic to deployments which has this lable
   labels:
     app: vprodb
-spec:
+spec:             #It defines the desired state and configuration for the Deployment itself.
   replicas: 1
   selector:
     matchLabels:
@@ -14,7 +14,7 @@ spec:
     metadata:
       labels:
         app : vprodb
-    spec:
+    spec:                 #this spec is at the pod level that defines the configurationof pod
       containers:
         - name: vprodb
           image: ritesh1999/vprofile_db:latest

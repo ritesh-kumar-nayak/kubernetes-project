@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vproapp
+  labels:
+    app: vproapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels: vproapp
+  template:
+    metadata:
+      labels:
+        app: vproapp
+    spec:
+      containers:
+        - name: vproapp
+          image: ritesh1999/vprofile_app:latest
+          ports:
+            - name: vproapp-port
+              containerPort: 8080
+
+      # here we want our MySQL db to be up before the this tomcat starts. So, we are putting my db in initcontainer
+      #until the mydb is not up and running this tomcat will not start
+      initContainers:
+        - name: init-mydb
+          image: busybox
+          command: ['sh', '-c', 'until nslookup vprodb; do echo waiting for mydb; sleep 2; done;']
+
+        - name: init-memcache
+          image: busybox
+          command: ['sh', '-c', 'until nslookup vprocache01; do echo waiting for memcached; sleep 2; done;']
